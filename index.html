@@ -26,6 +26,9 @@ button:active{transform:translateY(3px);box-shadow:0 2px #000}button:disabled{op
 .secondary{background:#ddd;color:#111;box-shadow:none}.map{background:#e8efe8;color:#17451c;box-shadow:none}
 .small{font-size:12px;color:#777;line-height:1.45}.history{font-size:13px;color:#555;line-height:1.45}
 .history div{padding:9px 0;border-bottom:1px solid #eee}
+
+input[type="range"]{width:100%;margin:10px 0 0;accent-color:auto}
+#radiusValue{float:right;font-size:14px;color:#151515;letter-spacing:0;text-transform:none}
 </style>
 </head>
 <body><main>
@@ -44,6 +47,11 @@ button:active{transform:translateY(3px);box-shadow:0 2px #000}button:disabled{op
 <option value="nice">🍸 Nice Night Out · $60–100 total</option>
 <option value="treat">✨ Treat Ourselves · $100–200+ total</option>
 </select></div>
+<div class="control" style="grid-column:1/-1">
+<div class="label">Explore Radius <span id="radiusValue">7 min</span></div>
+<input id="radius" type="range" min="3" max="20" step="1" value="7" aria-label="Exploration radius in minutes">
+<div style="display:flex;justify-content:space-between;font-size:10px;color:#888;margin-top:2px"><span>3 min</span><span>20 min</span></div>
+</div>
 </div>
 <label class="check"><input id="lake" type="checkbox"> 🌊 Give us a waterfront starting point</label>
 <label class="check"><input id="chaos" type="checkbox"> 😈 Make the mission weird</label>
@@ -52,9 +60,9 @@ button:active{transform:translateY(3px);box-shadow:0 2px #000}button:disabled{op
 <div id="roulette" class="card roulette"><div class="die">🎲</div><div>Finding your corner of Toronto…</div></div>
 
 <div id="result" class="card result">
-<div class="label">Your random starting point</div><div id="point" class="point"></div>
+<div class="label">Your random starting area</div><div id="point" class="point"></div>
 <div id="area" class="area"></div>
-<div class="radius"><b>The rule:</b> Start at this pin. You have roughly a <b>7-minute walk radius</b> to find something to do. Don't choose the destination beforehand.</div>
+<div class="radius"><b>The rule:</b> Start at this pin. The exact pin is your starting point; you have roughly a <b><span id="radiusText">7-minute</span> walk radius</b> to find something to do. Don't choose the destination beforehand.</div>
 <div class="label" style="margin-top:20px">Your mission</div><div id="mission" class="mission"></div>
 <div class="tags" id="tags"></div>
 <button class="map" id="map">📍 Open exact starting point in Maps</button>
@@ -91,7 +99,7 @@ const points=[
 ];
 
 const missions=[
-["Chill","Find a café, patio, park bench, lookout, or other comfortable spot within a 7-minute walk. Stay for at least 30 minutes.","free"],
+["Chill","Find a café, patio, park bench, lookout, or other comfortable spot within the selected radius. Stay for at least 30 minutes.","free"],
 ["Chill","Walk in one direction for 10 minutes, then choose the first place you both like the look of.","free"],
 ["Chill","Get something warm or cold to drink and find the nicest bench, patio, or view within a 10-minute walk.","free"],
 ["Playful","Go into the first interesting shop you see. Each of you gets $10 to find the weirdest thing.","casual"],
@@ -101,7 +109,7 @@ const missions=[
 ["Food","Find a place you've never tried and order one thing to share that neither of you would normally choose.","casual"],
 ["Food","You have 15 minutes to find the best snack within walking distance. No review apps allowed.","casual"],
 ["Food","Pick a cuisine neither of you has eaten together before and find something to try.","casual"],
-["Drinks","Find a café, bar, patio, or other drink spot within 7 minutes. One person chooses the first order.","nice"],
+["Drinks","Find a café, bar, patio, or other drink spot within the selected radius. One person chooses the first order.","nice"],
 ["Drinks","Get one drink somewhere nearby, then walk until you find a second place that looks better.","nice"],
 ["Drinks","Find somewhere that feels a little special. You're allowed to spend up to $50 each on the first round.","treat"],
 ["Adventure","You cannot use Google Maps to choose the next stop. Wander for 20 minutes and follow whatever catches your attention.","free"],
@@ -123,6 +131,17 @@ function budgetForMission(){
  const b=$("budget").value;
  return b==="any"?["free","casual","nice","treat"][Math.floor(Math.random()*4)]:b;
 }
+function getRadius(){
+ return Number($("radius").value||7);
+}
+function radiusLabel(){
+ return getRadius()+"-minute";
+}
+function updateRadiusDisplay(){
+ const value=getRadius();
+ $("radiusValue").textContent=value+" min";
+ if(lastPoint) $("radiusText").textContent=radiusLabel();
+}
 function choosePoint(){
  let p=$("lake").checked?points.filter(x=>x[4]==="lake"):points;
  let x=pick(p);if(p.length>1)while(x===lastPoint)x=pick(p);
@@ -137,15 +156,30 @@ function chooseMission(){
  let m=pick(a);if(a.length>1)while(m===lastMission)m=pick(a);return m;
 }
 function spin(){
- $("spin").disabled=true;$("roulette").classList.add("show");$("result").classList.remove("show");
- setTimeout(()=>{lastPoint=choosePoint();lastMission=chooseMission();render();$("roulette").classList.remove("show");$("spin").disabled=false},900);
+ $("spin").disabled=true;
+ $("roulette").classList.add("show");
+ $("result").classList.remove("show");
+ setTimeout(()=>{
+   try{
+     lastPoint=choosePoint();
+     lastMission=chooseMission();
+     render();
+   }catch(error){
+     console.error("Date Roulette error:",error);
+     alert("Something went wrong while spinning. Please refresh and try again.");
+   }finally{
+     $("roulette").classList.remove("show");
+     $("spin").disabled=false;
+   }
+ },650);
 }
 function render(){
  $("point").textContent=lastPoint[1];
  $("area").textContent=lastPoint[0]+" · "+(lastPoint[4]==="lake"?"Waterfront":"Downtown");
+ $("radiusText").textContent=radiusLabel();
  $("mission").textContent=lastMission[1];
  const labels={free:"🌿 Mostly Free",casual:"🍕 Casual Date",nice:"🍸 Nice Night Out",treat:"✨ Treat Ourselves"};
- $("tags").innerHTML=`<span class="tag">${lastMission[0]}</span><span class="tag">${labels[lastMission[2]]}</span>${lastPoint[4]==="lake"?"<span class="tag">🌊 Waterfront</span>":""}`;
+ $("tags").innerHTML=`<span class="tag">${lastMission[0]}</span><span class="tag">${labels[lastMission[2]]}</span>${lastPoint[4]==="lake"?'<span class="tag">🌊 Waterfront</span>':''}`;
  $("result").classList.add("show");save();
 }
 function reroll(){lastMission=chooseMission();render()}
@@ -158,8 +192,13 @@ function renderHistory(){
  let h=JSON.parse(localStorage.getItem("date-roulette-history")||"[]");if(!h.length)return;
  $("historyCard").style.display="block";$("history").innerHTML=h.map(x=>`<div><b>${x.point}</b> · ${x.area}<br>${x.mission}</div>`).join("");
 }
-$("spin").onclick=spin;$("reroll").onclick=reroll;
-$("map").onclick=()=>{if(lastPoint)location.href=`https://www.google.com/maps/search/?api=1&query=${lastPoint.lat},${lastPoint.lon}`};
+$("spin").addEventListener("click",spin);
+$("reroll").addEventListener("click",reroll);
+$("radius").addEventListener("input",updateRadiusDisplay);
+updateRadiusDisplay();
+$("map").addEventListener("click",()=>{
+ if(lastPoint) location.href=`https://www.google.com/maps/search/?api=1&query=${lastPoint.lat},${lastPoint.lon}`;
+});
 renderHistory();
 if("serviceWorker"in navigator)navigator.serviceWorker.register("sw.js");
 </script></body></html>
