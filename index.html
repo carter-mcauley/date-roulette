@@ -177,67 +177,70 @@ const locations=[
 ];
 
 const normalDates=[
-["chill","Find a café, patio, park bench, lookout, or other comfortable spot nearby and stay for at least 30 minutes.","free"],
-["chill","Walk in one direction until you find somewhere you both genuinely want to stop. No review apps.","free"],
-["chill","Find somewhere to get a drink and sit somewhere neither of you has been before.","casual"],
-["playful","Go into the first interesting shop you see. Each of you gets $10 to find the weirdest thing.","casual"],
-["playful","Take turns choosing the next street until you find somewhere worth stopping.","free"],
-["food","Find a place neither of you has tried and order one thing to share that neither of you would normally choose.","casual"],
-["food","Find the best snack you can within walking distance. No review apps.","casual"],
-["food","Pick a cuisine neither of you has eaten together before and find somewhere to try it.","casual"],
-["drinks","Find a café, bar, or patio nearby. One person chooses the first order.","nice"],
-["drinks","Get one drink somewhere nearby, then walk until you find a second place that looks better.","nice"],
-["adventure","You cannot use Maps to choose your next stop. Wander and follow whatever catches your attention.","free"],
-["adventure","Find something neither of you has done together before. If it costs money, make it worth it.","nice"]
+{vibe:"chill",text:"Find a café, patio, park bench, lookout, or other comfortable spot nearby and stay for at least 30 minutes.",budget:"free"},
+{vibe:"chill",text:"Walk in one direction until you find somewhere you both genuinely want to stop. No review apps.",budget:"free"},
+{vibe:"chill",text:"Find somewhere to get a drink and sit somewhere neither of you has been before.",budget:"casual"},
+{vibe:"playful",text:"Go into the first interesting shop you see. Each of you gets $10 to find the weirdest thing.",budget:"casual"},
+{vibe:"playful",text:"Take turns choosing the next street until you find somewhere worth stopping.",budget:"free"},
+{vibe:"food",text:"Find a place neither of you has tried and order one thing to share that neither of you would normally choose.",budget:"casual"},
+{vibe:"food",text:"Find the best snack you can within walking distance. No review apps.",budget:"casual"},
+{vibe:"food",text:"Pick a cuisine neither of you has eaten together before and find somewhere to try it.",budget:"casual"},
+{vibe:"drinks",text:"Find a café, bar, or patio nearby. One person chooses the first order.",budget:"nice"},
+{vibe:"drinks",text:"Get one drink somewhere nearby, then walk until you find a second place that looks better.",budget:"nice"},
+{vibe:"adventure",text:"You cannot use Maps to choose your next stop. Wander and follow whatever catches your attention.",budget:"free"},
+{vibe:"adventure",text:"Find something neither of you has done together before. If it costs money, make it worth it.",budget:"nice"}
 ];
 
 const chaosDates={
 mild:[
-["Find a place neither of you has tried before and order something neither of you normally gets.","free"],
-["Go into the first shop that catches your eye. Each person gets five minutes to pick something for the other.","casual"],
-["Take turns choosing left or right at each intersection for 15 minutes.","free"],
-["Find a place with a game you've never played and play one round.","casual"],
-["Each person picks a direction. Walk that way for 10 minutes before deciding where to stop.","free"]
+{text:"Find a place neither of you has tried before and order something neither of you normally gets.",budget:"free"},
+{text:"Go into the first shop that catches your eye. Each person gets five minutes to pick something for the other.",budget:"casual"},
+{text:"Take turns choosing left or right at each intersection for 15 minutes.",budget:"free"},
+{text:"Find a place with a game you've never played and play one round.",budget:"casual"},
+{text:"Each person picks a direction. Walk that way for 10 minutes before deciding where to stop.",budget:"free"}
 ],
 weird:[
-["Find the nearest thrift store. You each have $5 to find the strangest object you can.","casual"],
-["Find the nearest park. Each of you gets five minutes to find the strangest thing within it.","free"],
-["For the next 20 minutes, neither of you can say “yes” or “no.”","free"],
-["Find the nearest convenience store. You each have $3 to buy the other person something they've never tried.","free"],
-["Find an antique or vintage shop. Each of you has to identify the object with the most confusing purpose.","free"],
-["Find a public piano. One person chooses something the other has to attempt to play, regardless of skill.","free"],
-["Find the strangest storefront, sign, or piece of public art nearby. Whoever spots it first chooses the next direction.","free"],
-["Go somewhere neither of you would normally choose for a date. Stay for at least 20 minutes.","free"]
+{text:"Find the nearest thrift store. You each have $5 to find the strangest object you can.",budget:"casual"},
+{text:"Find the nearest park. Each of you gets five minutes to find the strangest thing within it.",budget:"free"},
+{text:"For the next 20 minutes, neither of you can say “yes” or “no.”",budget:"free"},
+{text:"Find the nearest convenience store. You each have $3 to buy the other person something they've never tried.",budget:"free"},
+{text:"Find an antique or vintage shop. Each of you has to identify the object with the most confusing purpose.",budget:"free"},
+{text:"Find a public piano. One person chooses something the other has to attempt to play, regardless of skill.",budget:"free"},
+{text:"Find the strangest storefront, sign, or piece of public art nearby. Whoever spots it first chooses the next direction.",budget:"free"},
+{text:"Go somewhere neither of you would normally choose for a date. Stay for at least 20 minutes.",budget:"free"}
 ],
 chaotic:[
-["Go to the nearest convenience store. You each have $5 to assemble a meal for the other person. You have to eat what they chose.","casual"],
-["Find the nearest karaoke bar. You each choose the other's first song. No vetoes.","nice"],
-["Find the nearest arcade, pool hall, bowling alley, or game spot. Invent your own competition and play it.","nice"],
-["Find the nearest thrift store. You each have $10 to buy an outfit or accessory the other person has to wear for the rest of the date.","casual"],
-["Go into the first shop you see and ask the person working there what they would do nearby for a fun date.","free"],
-["Find somewhere selling food neither of you has ever eaten. That's what you're having.","casual"],
-["Find a place with live music without checking who is playing. Go in and stay for at least one song.","nice"],
-["Go to the nearest grocery store. You each have $10 to buy ingredients for something the other person has to invent.","casual"]
+{text:"Go to the nearest convenience store. You each have $5 to assemble a meal for the other person. You have to eat what they chose.",budget:"casual"},
+{text:"Find the nearest karaoke bar. You each choose the other's first song. No vetoes.",budget:"nice"},
+{text:"Find the nearest arcade, pool hall, bowling alley, or game spot. Invent your own competition and play it.",budget:"nice"},
+{text:"Find the nearest thrift store. You each have $10 to buy an outfit or accessory the other person has to wear for the rest of the date.",budget:"casual"},
+{text:"Go into the first shop you see and ask the person working there what they would do nearby for a fun date.",budget:"free"},
+{text:"Find somewhere selling food neither of you has ever eaten. That's what you're having.",budget:"casual"},
+{text:"Find a place with live music without checking who is playing. Go in and stay for at least one song.",budget:"nice"},
+{text:"Go to the nearest grocery store. You each have $10 to buy ingredients for something the other person has to invent.",budget:"casual"}
 ],
 unhinged:[
-["Find a laundromat. Get a snack nearby and spend 20 minutes there together. You are not allowed to explain why you chose it.","free"],
-["Find the nearest karaoke bar. Each person chooses a song for the other person and you both have to perform it.","nice"],
-["Go to the nearest public piano. One person chooses a song the other person has to attempt to play. No matter how bad it is, finish it.","free"],
-["Find the nearest dollar store. You each have $10 to assemble a completely inexplicable gift for the other person.","casual"],
-["Find the nearest flower shop. You each have $10 to make the strangest bouquet possible for the other person.","casual"],
-["Walk for 20 minutes without using Maps. Every time either person spots something genuinely strange, you must stop and investigate it.","free"],
-["Go to the nearest grocery store. Each person has $10 to create the other person's three-course meal. You have to eat it somewhere nearby.","casual"],
-["Find a place neither of you has heard of. Walk in and ask what the strangest thing they've ever had someone do there was.","free"],
-["Find the nearest arcade or game venue. The loser of your first game has to choose the next three stops.","casual"],
-["Go to the nearest thrift store. Each person gets $15 to assemble the other person's most ridiculous date outfit. Wear one piece for the rest of the night.","casual"]
+{text:"Find a laundromat. Get a snack nearby and spend 20 minutes there together. You are not allowed to explain why you chose it.",budget:"free"},
+{text:"Find the nearest karaoke bar. Each person chooses a song for the other person and you both have to perform it.",budget:"nice"},
+{text:"Go to the nearest public piano. One person chooses a song the other person has to attempt to play. No matter how bad it is, finish it.",budget:"free"},
+{text:"Find the nearest dollar store. You each have $10 to assemble a completely inexplicable gift for the other person.",budget:"casual"},
+{text:"Find the nearest flower shop. You each have $10 to make the strangest bouquet possible for the other person.",budget:"casual"},
+{text:"Walk for 20 minutes without using Maps. Every time either person spots something genuinely strange, you must stop and investigate it.",budget:"free"},
+{text:"Go to the nearest grocery store. Each person has $10 to create the other person's three-course meal. You have to eat it somewhere nearby.",budget:"casual"},
+{text:"Find a place neither of you has heard of. Walk in and ask what the strangest thing they've ever had someone do there was.",budget:"free"},
+{text:"Find the nearest arcade or game venue. The loser of your first game has to choose the next three stops.",budget:"casual"},
+{text:"Go to the nearest thrift store. Each person gets $15 to assemble the other person's most ridiculous date outfit. Wear one piece for the rest of the night.",budget:"casual"}
 ]
 };
+
+const chaosLabels={normal:"Normal",mild:"Mild",weird:"Weird",chaotic:"Chaotic",unhinged:"Unhinged"};
+const budgetLabels={free:"Mostly Free",casual:"Casual",nice:"Nice",treat:"Treat Ourselves"};
 
 const $=id=>document.getElementById(id);
 const pick=a=>a[Math.floor(Math.random()*a.length)];
 let current=null;
 
-const chaosLabels={normal:"Normal",mild:"Mild",weird:"Weird",chaotic:"Chaotic",unhinged:"Unhinged"};
+
 $("chaos").addEventListener("change",()=>{
  const c=$("chaos").value;
  const notes={normal:"Normal date ideas.",mild:"A little unusual.",weird:"Properly strange.",chaotic:"Things may get ridiculous.",unhinged:"Why are we doing this?"};
@@ -255,20 +258,35 @@ function chooseLocation(){
 function chooseDate(){
  const chaos=$("chaos").value;
  const budget=$("budget").value;
- let pool=chaos==="normal"?normalDates:chaosDates[chaos];
- if(budget!=="any"){
-   const filtered=pool.filter(x=>x[2]===budget);
-   if(filtered.length)pool=filtered;
+ const vibe=$("vibe").value;
+ let pool;
+
+ if(chaos==="normal"){
+   pool=normalDates;
+   if(vibe!=="any"){
+     const vibePool=pool.filter(d=>d.vibe===vibe);
+     if(vibePool.length)pool=vibePool;
+   }
+ }else{
+   pool=chaosDates[chaos] || chaosDates.mild;
  }
+
+ if(budget!=="any"){
+   const budgetPool=pool.filter(d=>d.budget===budget);
+   if(budgetPool.length)pool=budgetPool;
+ }
+
  return pick(pool);
 }
+
 function saveHistory(){
  let h=[];
  try{h=JSON.parse(localStorage.getItem("date-roulette-history")||"[]");}catch(e){}
- h.unshift({location:current.location[1],area:current.location[0],date:current.date[1]});
+ h.unshift({location:current.location[1],area:current.location[0],date:current.date.text});
  localStorage.setItem("date-roulette-history",JSON.stringify(h.slice(0,5)));
  renderHistory();
 }
+
 function renderHistory(){
  let h=[];
  try{h=JSON.parse(localStorage.getItem("date-roulette-history")||"[]");}catch(e){}
@@ -276,18 +294,27 @@ function renderHistory(){
  $("recentCard").style.display="block";
  $("history").innerHTML=h.map(x=>'<div class="history-item"><b>'+escapeHtml(x.area)+'</b> — '+escapeHtml(x.date)+'</div>').join("");
 }
+
 function escapeHtml(s){
  return String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[c]));
 }
+
 function render(){
  $("point").textContent=current.location[1];
  $("areaText").textContent=current.location[0];
- $("date").textContent=current.date[1];
- const labels={free:"Mostly Free",casual:"Casual",nice:"Nice",treat:"Treat Ourselves"};
- $("tags").innerHTML='<span class="tag">'+chaosLabels[$("chaos").value]+'</span><span class="tag">'+labels[current.date[2]]+'</span>';
+
+ // IMPORTANT: the main result is always the actual date suggestion.
+ $("date").textContent=current.date.text;
+
+ const chaos=$("chaos").value;
+ const chaosLabel=chaosLabels[chaos] || "Normal";
+ const budgetLabel=budgetLabels[current.date.budget] || "Any budget";
+
+ $("tags").innerHTML='<span class="tag">'+chaosLabel+'</span><span class="tag">'+budgetLabel+'</span>';
  $("result").classList.add("show");
  saveHistory();
 }
+
 function spin(){
  $("spin").disabled=true;$("surprise").disabled=true;$("newDate").disabled=true;
  $("roulette").classList.add("show");$("result").classList.remove("show");
@@ -307,7 +334,9 @@ function spin(){
 $("spin").addEventListener("click",spin);
 $("newDate").addEventListener("click",spin);
 $("surprise").addEventListener("click",()=>{
- $("area").value="any";$("vibe").value="any";$("budget").value="any";
+ $("area").value="any";
+ $("vibe").value="any";
+ $("budget").value="any";
  $("chaos").value=pick(["normal","mild","weird","chaotic","unhinged"]);
  $("chaos").dispatchEvent(new Event("change"));
  spin();
