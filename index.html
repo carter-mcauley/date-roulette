@@ -18,7 +18,7 @@ select{width:100%;border:0;background:transparent;font-size:15px;font-weight:700
 .roulette{text-align:center;padding:30px;display:none}.roulette.show{display:block}
 .die{font-size:62px;display:inline-block;animation:roll .7s linear infinite}@keyframes roll{to{transform:rotate(360deg)}}
 .result{display:none}.result.show{display:block}.point{font-size:31px;font-weight:900;letter-spacing:-1px;margin:4px 0}
-.area{font-size:14px;color:#777}.mission{font-size:18px;line-height:1.45;color:#3f3f3f;margin-top:8px}
+.area{font-size:14px;color:#777}.date{font-size:18px;line-height:1.45;color:#3f3f3f;margin-top:8px}
 .radius{background:#eee;border-radius:12px;padding:11px;margin-top:14px;font-size:13px;line-height:1.4}
 .tags{display:flex;gap:7px;flex-wrap:wrap;margin-top:12px}.tag{background:#eee;border-radius:99px;padding:6px 9px;font-size:12px;font-weight:750}
 button{width:100%;border:0;border-radius:18px;padding:18px;font-size:18px;font-weight:850;background:#151515;color:#fff;box-shadow:0 5px #000;margin-top:9px}
@@ -29,13 +29,17 @@ button:active{transform:translateY(3px);box-shadow:0 2px #000}button:disabled{op
 
 input[type="range"]{width:100%;margin:10px 0 0;accent-color:auto}
 #radiusValue{float:right;font-size:14px;color:#151515;letter-spacing:0;text-transform:none}
-</style>
+.settings{display:none}.settings.show{display:block}.toggle-settings{background:none;color:#555;box-shadow:none;padding:7px 0;margin:2px 0;font-size:13px}.primary{width:100%;border:0;border-radius:18px;padding:18px;font-size:18px;font-weight:850;background:#151515;color:#fff;box-shadow:0 5px #000;margin-top:9px}.eyebrow{text-transform:uppercase;letter-spacing:1.5px;font-size:10px;color:#777;font-weight:850}</style>
 </head>
 <body><main>
 <h1>Date<br>Roulette 🎲</h1>
-<p class="sub">Let Toronto choose where your date starts. Get a random point, a small exploration radius, and a mission.</p>
+<p class="sub">Let Toronto choose where your date starts. Get a random point, a small exploration radius, and a date.</p>
 
 <div class="card">
+<div class="eyebrow">One tap date</div>
+<button class="primary" id="surprise">🎲 SURPRISE US</button>
+<button class="toggle-settings" id="toggleSettings">Customize instead ↓</button>
+<div class="settings" id="settings">
 <div class="grid">
 <div class="control"><div class="label">Vibe</div><select id="vibe">
 <option value="any">Surprise me</option><option>Chill</option><option>Playful</option>
@@ -53,8 +57,13 @@ input[type="range"]{width:100%;margin:10px 0 0;accent-color:auto}
 <div style="display:flex;justify-content:space-between;font-size:10px;color:#888;margin-top:2px"><span>3 min</span><span>20 min</span></div>
 </div>
 </div>
-<label class="check"><input id="lake" type="checkbox"> 🌊 Give us a waterfront starting point</label>
-<label class="check"><input id="chaos" type="checkbox"> 😈 Make the mission weird</label>
+<div class="control"><div class="label">Time</div><select id="time">
+<option value="any">Surprise me</option><option value="short">⚡ 30–60 min</option>
+<option value="medium">🕐 1–2 hours</option><option value="long">🌙 2–4 hours</option>
+<option value="unlimited">🎲 No limit</option></select></div>
+<label class="check"><input id="chaos" type="checkbox"> 😈 Make it weird</label>
+<button class="primary" id="spin">SPIN THE DATE</button>
+</div>
 </div>
 
 <div id="roulette" class="card roulette"><div class="die">🎲</div><div>Finding your corner of Toronto…</div></div>
@@ -63,15 +72,15 @@ input[type="range"]{width:100%;margin:10px 0 0;accent-color:auto}
 <div class="label">Your random starting area</div><div id="point" class="point"></div>
 <div id="area" class="area"></div>
 <div class="radius"><b>The rule:</b> Start at this pin. The exact pin is your starting point; you have roughly a <b><span id="radiusText">7-minute</span> walk radius</b> to find something to do. Don't choose the destination beforehand.</div>
-<div class="label" style="margin-top:20px">Your mission</div><div id="mission" class="mission"></div>
+<div class="label" style="margin-top:20px">Your date</div><div id="date" class="date"></div>
 <div class="tags" id="tags"></div>
 <button class="map" id="map">📍 Open exact starting point in Maps</button>
-<button class="secondary" id="reroll">Reroll the mission</button>
+<button class="secondary" id="reroll">New date</button>
 </div>
 
 <button id="spin">SPIN THE DATE 🎰</button>
 
-<div id="historyCard" class="card" style="display:none"><div class="label">Recent dates</div><div id="history" class="history"></div></div>
+</div>
 <p class="small">The point is intentionally not a restaurant or attraction. The fun is figuring out what the area has to offer together.</p>
 </main>
 
@@ -98,7 +107,7 @@ const points=[
 ["Waterfront West","Trillium Park",43.6315,-79.4130,"lake"]
 ];
 
-const missions=[
+const dates=[
 ["Chill","Find a café, patio, park bench, lookout, or other comfortable spot within the selected radius. Stay for at least 30 minutes.","free"],
 ["Chill","Walk in one direction for 10 minutes, then choose the first place you both like the look of.","free"],
 ["Chill","Get something warm or cold to drink and find the nicest bench, patio, or view within a 10-minute walk.","free"],
@@ -143,16 +152,26 @@ function updateRadiusDisplay(){
  if(lastPoint) $("radiusText").textContent=radiusLabel();
 }
 function choosePoint(){
- let p=$("lake").checked?points.filter(x=>x[4]==="lake"):points;
+ let p=points;
  let x=pick(p);if(p.length>1)while(x===lastPoint)x=pick(p);
  const angle=Math.random()*Math.PI*2, distanceKm=.06+Math.random()*.08;
  return {...x,lat:x[2]+Math.cos(angle)*distanceKm/111,lon:x[3]+Math.sin(angle)*distanceKm/(111*Math.cos(x[2]*Math.PI/180))};
 }
+function availableTime(){
+ const t=$("time")?.value||"any";
+ return t==="any"?null:t;
+}
 function chooseMission(){
  const vibe=$("vibe").value,budget=budgetForMission(),weird=$("chaos").checked;
- let a=missions.filter(m=>(vibe==="any"||m[0]===vibe||weird&&m[0]==="Weird")&&m[2]===budget);
- if(!a.length)a=missions.filter(m=>m[2]===budget);
- if(!a.length)a=missions;
+ let a;
+ if(weird){
+   a=dates.filter(m=>m[0]==="Weird"&&m[2]===budget);
+   if(!a.length)a=dates.filter(m=>m[0]==="Weird");
+ }else{
+   a=dates.filter(m=>(vibe==="any"||m[0]===vibe)&&m[2]===budget);
+   if(!a.length)a=dates.filter(m=>m[2]===budget);
+ }
+ if(!a.length)a=dates;
  let m=pick(a);if(a.length>1)while(m===lastMission)m=pick(a);return m;
 }
 function spin(){
@@ -177,7 +196,7 @@ function render(){
  $("point").textContent=lastPoint[1];
  $("area").textContent=lastPoint[0]+" · "+(lastPoint[4]==="lake"?"Waterfront":"Downtown");
  $("radiusText").textContent=radiusLabel();
- $("mission").textContent=lastMission[1];
+ $("date").textContent=lastMission[1];
  const labels={free:"🌿 Mostly Free",casual:"🍕 Casual Date",nice:"🍸 Nice Night Out",treat:"✨ Treat Ourselves"};
  $("tags").innerHTML=`<span class="tag">${lastMission[0]}</span><span class="tag">${labels[lastMission[2]]}</span>${lastPoint[4]==="lake"?'<span class="tag">🌊 Waterfront</span>':''}`;
  $("result").classList.add("show");save();
@@ -185,12 +204,12 @@ function render(){
 function reroll(){lastMission=chooseMission();render()}
 function save(){
  let h=JSON.parse(localStorage.getItem("date-roulette-history")||"[]");
- h.unshift({point:lastPoint[1],area:lastPoint[0],mission:lastMission[1]});h=h.slice(0,8);
+ h.unshift({point:lastPoint[1],area:lastPoint[0],date:lastMission[1]});h=h.slice(0,8);
  localStorage.setItem("date-roulette-history",JSON.stringify(h));renderHistory();
 }
 function renderHistory(){
  let h=JSON.parse(localStorage.getItem("date-roulette-history")||"[]");if(!h.length)return;
- $("historyCard").style.display="block";$("history").innerHTML=h.map(x=>`<div><b>${x.point}</b> · ${x.area}<br>${x.mission}</div>`).join("");
+ $("historyCard").style.display="block";$("history").innerHTML=h.map(x=>`<div><b>${x.point}</b> · ${x.area}<br>${x.date}</div>`).join("");
 }
 $("spin").addEventListener("click",spin);
 $("reroll").addEventListener("click",reroll);
