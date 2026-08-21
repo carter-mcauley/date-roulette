@@ -8,216 +8,205 @@
 <link rel="manifest" href="manifest.json">
 <style>
 *{box-sizing:border-box}body{margin:0;background:#f3efe8;color:#151515;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
-main{min-height:100svh;max-width:600px;margin:auto;padding:20px 18px 35px}
-h1{font-size:44px;line-height:.88;letter-spacing:-2.5px;margin:16px 0 8px}.sub{color:#666;margin:0 0 18px;line-height:1.4}
+main{min-height:100svh;max-width:600px;margin:auto;padding:20px 18px 38px}
+h1{font-size:46px;line-height:.88;letter-spacing:-2.7px;margin:16px 0 8px}.sub{color:#666;margin:0 0 20px;line-height:1.45}
 .card{background:#fff;border-radius:24px;padding:20px;box-shadow:0 8px 28px #0001;margin:12px 0}
 .grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}.control{background:#f3f1ed;border-radius:15px;padding:11px}
 .label{text-transform:uppercase;letter-spacing:1.4px;font-size:10px;color:#777;font-weight:800}
 select{width:100%;border:0;background:transparent;font-size:15px;font-weight:700;padding-top:5px;outline:0}
+.range-wrap{grid-column:1/-1}.range-head{display:flex;justify-content:space-between;align-items:center}
+.range-value{font-size:14px;color:#151515;text-transform:none;letter-spacing:0}input[type=range]{width:100%;margin:10px 0 0}
+.range-labels{display:flex;justify-content:space-between;font-size:10px;color:#888}
 .check{display:flex;align-items:center;gap:9px;font-size:14px;margin-top:12px}.check input{width:18px;height:18px}
+button{width:100%;border:0;border-radius:18px;padding:18px;font-size:18px;font-weight:850;margin-top:10px;cursor:pointer}
+.primary{background:#151515;color:#fff;box-shadow:0 5px #000}.primary:active{transform:translateY(3px);box-shadow:0 2px #000}
+.primary:disabled{opacity:.6;cursor:default}.secondary{background:#ddd;color:#111}.surprise{background:#eee;color:#111;box-shadow:none}
 .roulette{text-align:center;padding:30px;display:none}.roulette.show{display:block}
 .die{font-size:62px;display:inline-block;animation:roll .7s linear infinite}@keyframes roll{to{transform:rotate(360deg)}}
-.result{display:none}.result.show{display:block}.point{font-size:31px;font-weight:900;letter-spacing:-1px;margin:4px 0}
-.area{font-size:14px;color:#777}.date{font-size:18px;line-height:1.45;color:#3f3f3f;margin-top:8px}
-.radius{background:#eee;border-radius:12px;padding:11px;margin-top:14px;font-size:13px;line-height:1.4}
+.result{display:none}.result.show{display:block}.eyebrow{text-transform:uppercase;letter-spacing:1.5px;font-size:10px;color:#777;font-weight:850}
+.point{font-size:31px;font-weight:900;letter-spacing:-1px;margin:4px 0}.area{font-size:14px;color:#777}
+.rule{background:#eee;border-radius:12px;padding:12px;margin-top:14px;font-size:13px;line-height:1.45}
+.date{font-size:19px;line-height:1.45;margin-top:6px}.date-card{margin-top:18px}
 .tags{display:flex;gap:7px;flex-wrap:wrap;margin-top:12px}.tag{background:#eee;border-radius:99px;padding:6px 9px;font-size:12px;font-weight:750}
-button{width:100%;border:0;border-radius:18px;padding:18px;font-size:18px;font-weight:850;background:#151515;color:#fff;box-shadow:0 5px #000;margin-top:9px}
-button:active{transform:translateY(3px);box-shadow:0 2px #000}button:disabled{opacity:.6}
-.secondary{background:#ddd;color:#111;box-shadow:none}.map{background:#e8efe8;color:#17451c;box-shadow:none}
-.small{font-size:12px;color:#777;line-height:1.45}.history{font-size:13px;color:#555;line-height:1.45}
-.history div{padding:9px 0;border-bottom:1px solid #eee}
-
-input[type="range"]{width:100%;margin:10px 0 0;accent-color:auto}
-#radiusValue{float:right;font-size:14px;color:#151515;letter-spacing:0;text-transform:none}
-.settings{display:none}.settings.show{display:block}.toggle-settings{background:none;color:#555;box-shadow:none;padding:7px 0;margin:2px 0;font-size:13px}.primary{width:100%;border:0;border-radius:18px;padding:18px;font-size:18px;font-weight:850;background:#151515;color:#fff;box-shadow:0 5px #000;margin-top:9px}.eyebrow{text-transform:uppercase;letter-spacing:1.5px;font-size:10px;color:#777;font-weight:850}</style>
+.map{background:#e8efe8;color:#17451c;box-shadow:none}.small{font-size:12px;color:#777;line-height:1.45}
+.divider{height:1px;background:#eee;margin:18px 0 4px}
+</style>
 </head>
-<body><main>
+<body>
+<main>
 <h1>Date<br>Roulette 🎲</h1>
-<p class="sub">Let Toronto choose where your date starts. Get a random point, a small exploration radius, and a date.</p>
+<p class="sub">Pick your preferences, then let Toronto decide where your date starts.</p>
 
 <div class="card">
-<div class="eyebrow">One tap date</div>
-<button class="primary" id="surprise">🎲 SURPRISE US</button>
-<button class="toggle-settings" id="toggleSettings">Customize instead ↓</button>
-<div class="settings" id="settings">
 <div class="grid">
 <div class="control"><div class="label">Vibe</div><select id="vibe">
-<option value="any">Surprise me</option><option>Chill</option><option>Playful</option>
-<option>Food</option><option>Drinks</option><option>Adventure</option></select></div>
+<option value="any">Surprise me</option><option value="Chill">Chill</option><option value="Playful">Playful</option>
+<option value="Food">Food</option><option value="Drinks">Drinks</option><option value="Adventure">Adventure</option>
+</select></div>
+
 <div class="control"><div class="label">Budget</div><select id="budget">
-<option value="any">Surprise me</option>
-<option value="free">🌿 Mostly Free · $0–30 total</option>
-<option value="casual">🍕 Casual Date · $30–60 total</option>
-<option value="nice">🍸 Nice Night Out · $60–100 total</option>
+<option value="any">Surprise me</option><option value="free">🌿 Mostly Free · $0–30 total</option>
+<option value="casual">🍕 Casual Date · $30–60 total</option><option value="nice">🍸 Nice Night Out · $60–100 total</option>
 <option value="treat">✨ Treat Ourselves · $100–200+ total</option>
 </select></div>
-<div class="control" style="grid-column:1/-1">
-<div class="label">Explore Radius <span id="radiusValue">7 min</span></div>
-<input id="radius" type="range" min="3" max="20" step="1" value="7" aria-label="Exploration radius in minutes">
-<div style="display:flex;justify-content:space-between;font-size:10px;color:#888;margin-top:2px"><span>3 min</span><span>20 min</span></div>
+
+<div class="control range-wrap">
+<div class="range-head"><div class="label">Walk</div><div class="range-value" id="radiusValue">7 min</div></div>
+<input id="radius" type="range" min="3" max="20" step="1" value="7">
+<div class="range-labels"><span>3 min</span><span>20 min</span></div>
 </div>
-</div>
+
 <div class="control"><div class="label">Time</div><select id="time">
 <option value="any">Surprise me</option><option value="short">⚡ 30–60 min</option>
 <option value="medium">🕐 1–2 hours</option><option value="long">🌙 2–4 hours</option>
-<option value="unlimited">🎲 No limit</option></select></div>
-<label class="check"><input id="chaos" type="checkbox"> 😈 Make it weird</label>
-<button class="primary" id="spin">SPIN THE DATE</button>
+<option value="unlimited">🎲 No limit</option>
+</select></div>
 </div>
+
+<label class="check"><input id="weird" type="checkbox"> 😈 Make it weird</label>
+
+<button class="primary" id="spin">SPIN THE DATE</button>
+<div class="divider"></div>
+<button class="surprise" id="surprise">🎲 Surprise us</button>
 </div>
 
 <div id="roulette" class="card roulette"><div class="die">🎲</div><div>Finding your corner of Toronto…</div></div>
 
 <div id="result" class="card result">
-<div class="label">Your random starting area</div><div id="point" class="point"></div>
-<div id="area" class="area"></div>
-<div class="radius"><b>The rule:</b> Start at this pin. The exact pin is your starting point; you have roughly a <b><span id="radiusText">7-minute</span> walk radius</b> to find something to do. Don't choose the destination beforehand.</div>
-<div class="label" style="margin-top:20px">Your date</div><div id="date" class="date"></div>
-<div class="tags" id="tags"></div>
-<button class="map" id="map">📍 Open exact starting point in Maps</button>
-<button class="secondary" id="reroll">New date</button>
+<div class="eyebrow">Where?</div>
+<div id="point" class="point"></div><div id="area" class="area"></div>
+<div class="rule"><b>Start here.</b> This is your exact starting pin. You have a <b><span id="radiusText">7-minute</span> walk</b> in any direction to figure out what to do. Don't choose the destination beforehand.</div>
+<div class="date-card"><div class="eyebrow">Your date</div><div id="date" class="date"></div><div class="tags" id="tags"></div></div>
+<button class="map" id="map">📍 Open starting point in Maps</button>
+<button class="secondary" id="newDate">🎲 New date</button>
 </div>
 
-<button id="spin">SPIN THE DATE 🎰</button>
-
-</div>
-<p class="small">The point is intentionally not a restaurant or attraction. The fun is figuring out what the area has to offer together.</p>
+<p class="small">The starting point isn't a destination. It's just where the date begins. The fun is discovering what's around you together.</p>
 </main>
 
 <script>
+"use strict";
+
 const points=[
-["Harbourfront","HTO Park",43.6389,-79.3957,"lake"],["Harbourfront","Music Garden",43.6374,-79.3994,"lake"],
-["Harbourfront","Harbour Square",43.6396,-79.3776,"lake"],["Harbourfront","Queens Quay / Spadina",43.6372,-79.3975,"lake"],
-["Harbourfront","Rees Street / Queens Quay",43.6379,-79.3916,"lake"],["Harbourfront","Lower Simcoe / Queens Quay",43.6382,-79.3857,"lake"],
-["Old Town","Berczy Park",43.6485,-79.3755,"city"],["Old Town","Gooderham / Front",43.6505,-79.3762,"city"],
-["St. Lawrence","The Esplanade",43.6480,-79.3714,"city"],["St. Lawrence","Market Street",43.6492,-79.3711,"city"],
-["Distillery","Trinity Street",43.6503,-79.3599,"city"],["Distillery","Mill Street",43.6500,-79.3590,"city"],
-["Corktown","Underpass Park",43.6561,-79.3548,"city"],["Queen West","Graffiti Alley",43.6470,-79.4000,"city"],
-["Queen West","Queen / Spadina",43.6487,-79.3957,"city"],["Queen West","Queen / Bathurst",43.6474,-79.4052,"city"],
-["Trinity Bellwoods","Trinity Bellwoods Park",43.6475,-79.4140,"city"],["Ossington","Ossington / Queen",43.6432,-79.4203,"city"],
-["Ossington","Ossington / Dundas",43.6498,-79.4202,"city"],["Kensington","Baldwin / Kensington",43.6544,-79.4004,"city"],
-["Kensington","Augusta / Baldwin",43.6548,-79.4021,"city"],["Kensington","Bellevue Square",43.6524,-79.4027,"city"],
-["Chinatown","Dundas / Spadina",43.6534,-79.3972,"city"],["Chinatown","Dundas / Augusta",43.6531,-79.4012,"city"],
-["The Annex","Bloor / Brunswick",43.6658,-79.4051,"city"],["The Annex","Harbord / Bathurst",43.6614,-79.4077,"city"],
-["Yorkville","Village of Yorkville Park",43.6703,-79.3936,"city"],["Yorkville","Cumberland / Bay",43.6711,-79.3895,"city"],
-["King West","King / Spadina",43.6452,-79.3950,"city"],["King West","King / Bathurst",43.6444,-79.4008,"city"],
-["Entertainment","John / Richmond",43.6460,-79.3901,"city"],["Downtown","Nathan Phillips Square",43.6525,-79.3839,"city"],
-["Downtown","Queen / University",43.6520,-79.3905,"city"],["Downtown","Grange Park",43.6520,-79.3929,"city"],
-["Waterfront East","Sugar Beach",43.6425,-79.3667,"lake"],["Waterfront East","Water's Edge Promenade",43.6433,-79.3619,"lake"],
-["Waterfront West","Trillium Park",43.6315,-79.4130,"lake"]
+["Harbourfront","Near HTO Park",43.6389,-79.3957,"lake"],["Harbourfront","Near Music Garden",43.6374,-79.3994,"lake"],
+["Harbourfront","Near Harbour Square",43.6396,-79.3776,"lake"],["Harbourfront","Near Queens Quay & Spadina",43.6372,-79.3975,"lake"],
+["Harbourfront","Near Rees Street",43.6379,-79.3916,"lake"],["Harbourfront","Near Lower Simcoe",43.6382,-79.3857,"lake"],
+["Old Town","Near Berczy Park",43.6485,-79.3755,"city"],["Old Town","Near Front & Church",43.6505,-79.3762,"city"],
+["St. Lawrence","Near The Esplanade",43.6480,-79.3714,"city"],["St. Lawrence","Near Market Street",43.6492,-79.3711,"city"],
+["Distillery","Near Trinity Street",43.6503,-79.3599,"city"],["Distillery","Near Mill Street",43.6500,-79.3590,"city"],
+["Corktown","Near Underpass Park",43.6561,-79.3548,"city"],["Queen West","Near Graffiti Alley",43.6470,-79.4000,"city"],
+["Queen West","Near Queen & Spadina",43.6487,-79.3957,"city"],["Queen West","Near Queen & Bathurst",43.6474,-79.4052,"city"],
+["Trinity Bellwoods","Near Trinity Bellwoods Park",43.6475,-79.4140,"city"],["Ossington","Near Ossington & Queen",43.6432,-79.4203,"city"],
+["Ossington","Near Ossington & Dundas",43.6498,-79.4202,"city"],["Kensington","Near Baldwin & Kensington",43.6544,-79.4004,"city"],
+["Kensington","Near Augusta & Baldwin",43.6548,-79.4021,"city"],["Kensington","Near Bellevue Square",43.6524,-79.4027,"city"],
+["Chinatown","Near Dundas & Spadina",43.6534,-79.3972,"city"],["Chinatown","Near Dundas & Augusta",43.6531,-79.4012,"city"],
+["The Annex","Near Bloor & Brunswick",43.6658,-79.4051,"city"],["The Annex","Near Harbord & Bathurst",43.6614,-79.4077,"city"],
+["Yorkville","Near Village of Yorkville Park",43.6703,-79.3936,"city"],["Yorkville","Near Cumberland & Bay",43.6711,-79.3895,"city"],
+["King West","Near King & Spadina",43.6452,-79.3950,"city"],["King West","Near King & Bathurst",43.6444,-79.4008,"city"],
+["Entertainment","Near John & Richmond",43.6460,-79.3901,"city"],["Downtown","Near Nathan Phillips Square",43.6525,-79.3839,"city"],
+["Downtown","Near Queen & University",43.6520,-79.3905,"city"],["Downtown","Near Grange Park",43.6520,-79.3929,"city"],
+["Waterfront East","Near Sugar Beach",43.6425,-79.3667,"lake"],["Waterfront East","Near Water's Edge",43.6433,-79.3619,"lake"],
+["Waterfront West","Near Trillium Park",43.6315,-79.4130,"lake"],["Parkdale","Near Queen & Roncesvalles",43.6409,-79.4470,"city"],
+["Little Italy","Near College & Ossington",43.6547,-79.4200,"city"],["Little Portugal","Near Dundas & Dovercourt",43.6507,-79.4311,"city"],
+["Roncesvalles","Near Roncesvalles & Dundas",43.6497,-79.4490,"city"],["Danforth","Near Danforth & Broadview",43.6760,-79.3577,"city"],
+["Leslieville","Near Queen & Carlaw",43.6625,-79.3402,"city"],["Riverdale","Near Withrow Park",43.6738,-79.3465,"city"]
 ];
 
 const dates=[
-["Chill","Find a café, patio, park bench, lookout, or other comfortable spot within the selected radius. Stay for at least 30 minutes.","free"],
-["Chill","Walk in one direction for 10 minutes, then choose the first place you both like the look of.","free"],
-["Chill","Get something warm or cold to drink and find the nicest bench, patio, or view within a 10-minute walk.","free"],
-["Playful","Go into the first interesting shop you see. Each of you gets $10 to find the weirdest thing.","casual"],
-["Playful","Do a photo scavenger hunt: something beautiful, something ridiculous, something that looks expensive, and something delicious.","free"],
-["Playful","Each person gets 5 minutes to choose a completely unexpected stop for the other.","free"],
-["Playful","Pick a random street. Walk it until you find something that makes both of you say, “we should try that.”","free"],
-["Food","Find a place you've never tried and order one thing to share that neither of you would normally choose.","casual"],
-["Food","You have 15 minutes to find the best snack within walking distance. No review apps allowed.","casual"],
-["Food","Pick a cuisine neither of you has eaten together before and find something to try.","casual"],
-["Drinks","Find a café, bar, patio, or other drink spot within the selected radius. One person chooses the first order.","nice"],
-["Drinks","Get one drink somewhere nearby, then walk until you find a second place that looks better.","nice"],
-["Drinks","Find somewhere that feels a little special. You're allowed to spend up to $50 each on the first round.","treat"],
-["Adventure","You cannot use Google Maps to choose the next stop. Wander for 20 minutes and follow whatever catches your attention.","free"],
-["Adventure","Find something to do nearby that costs $15 or less. You have 20 minutes to discover it.","casual"],
-["Adventure","Find a genuinely interesting activity nearby without looking up reviews.","casual"],
-["Adventure","Pick a random street nearby and walk it end-to-end. Stop at the first place that makes you both curious.","free"],
-["Adventure","Find something neither of you has done together before. If it costs money, make it worth it.","nice"],
-["Adventure","Make this a proper night out: find a nearby experience, show, meal, or activity that feels worth dressing up for.","treat"],
-["Weird","You have 10 minutes to invent a completely fake backstory for three strangers or buildings you see. Best story wins.","free"],
-["Weird","Go to the first place that sells food and choose a snack for each other without explaining why.","casual"],
-["Weird","Pick the most unusual-looking business within 5 minutes. You must at least walk up and investigate it.","free"],
-["Weird","Give yourselves $5 each and buy something that represents the other person.","casual"]
+["Chill","Find a café, patio, park bench, lookout, or other comfortable spot within your walking range. Stay for at least 30 minutes.","free",["short","medium"]],
+["Chill","Walk in one direction until you find somewhere you both genuinely want to stop. No review apps.","free",["short","medium"]],
+["Chill","Get something to drink and find the nicest place nearby to sit and talk.","casual",["short","medium"]],
+["Playful","Go into the first interesting shop you see. Each of you gets $10 to find the weirdest thing.","casual",["short","medium"]],
+["Playful","Do a photo scavenger hunt: something beautiful, something ridiculous, something that looks expensive, and something delicious.","free",["short","medium"]],
+["Playful","Each person gets five minutes to choose a completely unexpected stop for the other.","free",["short","medium"]],
+["Playful","Pick a random street and walk until you find something that makes both of you say, “we should try that.”","free",["medium","long"]],
+["Food","Find a place neither of you has tried and order one thing to share that you wouldn't normally choose.","casual",["medium","long"]],
+["Food","You have 15 minutes to find the best snack nearby. No review apps allowed.","casual",["short","medium"]],
+["Food","Pick a cuisine neither of you has eaten together before and find something to try.","casual",["medium","long"]],
+["Drinks","Find a café, bar, patio, or other drink spot nearby. One person chooses the first order.","nice",["short","medium"]],
+["Drinks","Get one drink somewhere nearby, then walk until you find a second place that looks better.","nice",["medium","long"]],
+["Drinks","Find somewhere that feels a little special. You're allowed to spend up to $50 each on the first round.","treat",["medium","long"]],
+["Adventure","You cannot use Maps to choose the next stop. Wander and follow whatever catches your attention.","free",["medium","long"]],
+["Adventure","Find something to do nearby that costs $15 or less. You have 20 minutes to discover it.","casual",["short","medium"]],
+["Adventure","Find a genuinely interesting activity nearby without looking up reviews first.","casual",["medium","long"]],
+["Adventure","Pick a random street and walk it until you find a place that makes you curious.","free",["medium","long"]],
+["Adventure","Find something neither of you has done together before. If it costs money, make it worth it.","nice",["long","unlimited"]],
+["Adventure","Make this a proper night out: find a nearby experience, show, meal, or activity that feels worth dressing up for.","treat",["long","unlimited"]],
+["Weird","You have 10 minutes to invent a completely fake backstory for three buildings you can see. Best story wins.","free",["short","medium"]],
+["Weird","Go to the first place that sells food and choose a snack for each other without explaining why.","casual",["short","medium"]],
+["Weird","Find the most unusual-looking business nearby. You have to walk up and investigate it.","free",["short","medium"]],
+["Weird","Give yourselves $5 each and buy something that somehow represents the other person.","casual",["short","medium"]],
+["Weird","Find the strangest object, sign, or piece of street art within your walking range and build a story around it.","free",["short","medium"]],
+["Weird","Choose the most unexpected direction and keep walking until you find something neither of you expected.","free",["medium","long"]]
 ];
 
-let lastPoint=null,lastMission=null;
-const $=id=>document.getElementById(id),pick=a=>a[Math.floor(Math.random()*a.length)];
+const $=id=>document.getElementById(id);
+const pick=a=>a[Math.floor(Math.random()*a.length)];
+let currentPoint=null,currentDate=null;
 
-function budgetForMission(){
- const b=$("budget").value;
- return b==="any"?["free","casual","nice","treat"][Math.floor(Math.random()*4)]:b;
-}
-function getRadius(){
- return Number($("radius").value||7);
-}
-function radiusLabel(){
- return getRadius()+"-minute";
-}
-function updateRadiusDisplay(){
- const value=getRadius();
- $("radiusValue").textContent=value+" min";
- if(lastPoint) $("radiusText").textContent=radiusLabel();
-}
+function getRadius(){return Number($("radius").value)||7;}
+function getBudget(){const b=$("budget").value;return b==="any"?pick(["free","casual","nice","treat"]):b;}
+function getTime(){const t=$("time").value;return t==="any"?pick(["short","medium","long","unlimited"]):t;}
+
 function choosePoint(){
- let p=points;
- let x=pick(p);if(p.length>1)while(x===lastPoint)x=pick(p);
- const angle=Math.random()*Math.PI*2, distanceKm=.06+Math.random()*.08;
+ let x=pick(points);
+ if(points.length>1 && currentPoint)while(x[1]===currentPoint[1])x=pick(points);
+ const angle=Math.random()*Math.PI*2;
+ const distanceKm=.06+Math.random()*.08;
  return {...x,lat:x[2]+Math.cos(angle)*distanceKm/111,lon:x[3]+Math.sin(angle)*distanceKm/(111*Math.cos(x[2]*Math.PI/180))};
 }
-function availableTime(){
- const t=$("time")?.value||"any";
- return t==="any"?null:t;
-}
-function chooseMission(){
- const vibe=$("vibe").value,budget=budgetForMission(),weird=$("chaos").checked;
- let a;
+
+function chooseDate(){
+ const weird=$("weird").checked,v=$("vibe").value,b=getBudget(),t=getTime();
+ let pool;
  if(weird){
-   a=dates.filter(m=>m[0]==="Weird"&&m[2]===budget);
-   if(!a.length)a=dates.filter(m=>m[0]==="Weird");
+   pool=dates.filter(d=>d[0]==="Weird" && d[2]===b && d[3].includes(t));
+   if(!pool.length)pool=dates.filter(d=>d[0]==="Weird" && d[3].includes(t));
+   if(!pool.length)pool=dates.filter(d=>d[0]==="Weird");
  }else{
-   a=dates.filter(m=>(vibe==="any"||m[0]===vibe)&&m[2]===budget);
-   if(!a.length)a=dates.filter(m=>m[2]===budget);
+   pool=dates.filter(d=>(v==="any"||d[0]===v) && d[2]===b && d[3].includes(t));
+   if(!pool.length)pool=dates.filter(d=>(v==="any"||d[0]===v) && d[2]===b);
+   if(!pool.length)pool=dates.filter(d=>d[2]===b);
  }
- if(!a.length)a=dates;
- let m=pick(a);if(a.length>1)while(m===lastMission)m=pick(a);return m;
+ if(!pool.length)pool=dates;
+ let d=pick(pool);
+ if(pool.length>1 && currentDate)while(d[1]===currentDate[1])d=pick(pool);
+ return d;
 }
+
+function render(){
+ $("point").textContent=currentPoint[1];
+ $("area").textContent=currentPoint[0]+" · "+(currentPoint[4]==="lake"?"Waterfront area":"Toronto");
+ $("radiusText").textContent=getRadius()+"-minute";
+ $("date").textContent=currentDate[1];
+ const labels={free:"🌿 Mostly Free",casual:"🍕 Casual Date",nice:"🍸 Nice Night Out",treat:"✨ Treat Ourselves"};
+ $("tags").innerHTML='<span class="tag">'+currentDate[0]+'</span><span class="tag">'+labels[currentDate[2]]+'</span><span class="tag">'+getRadius()+' min walk</span>';
+ $("result").classList.add("show");
+}
+
 function spin(){
- $("spin").disabled=true;
- $("roulette").classList.add("show");
- $("result").classList.remove("show");
- setTimeout(()=>{
-   try{
-     lastPoint=choosePoint();
-     lastMission=chooseMission();
-     render();
-   }catch(error){
-     console.error("Date Roulette error:",error);
-     alert("Something went wrong while spinning. Please refresh and try again.");
-   }finally{
-     $("roulette").classList.remove("show");
-     $("spin").disabled=false;
-   }
+ $("spin").disabled=true;$("surprise").disabled=true;$("newDate").disabled=true;
+ $("roulette").classList.add("show");$("result").classList.remove("show");
+ window.setTimeout(function(){
+   try{currentPoint=choosePoint();currentDate=chooseDate();render();}
+   catch(err){console.error(err);alert("Something went wrong. Please refresh and try again.");}
+   finally{$("roulette").classList.remove("show");$("spin").disabled=false;$("surprise").disabled=false;$("newDate").disabled=false;}
  },650);
 }
-function render(){
- $("point").textContent=lastPoint[1];
- $("area").textContent=lastPoint[0]+" · "+(lastPoint[4]==="lake"?"Waterfront":"Downtown");
- $("radiusText").textContent=radiusLabel();
- $("date").textContent=lastMission[1];
- const labels={free:"🌿 Mostly Free",casual:"🍕 Casual Date",nice:"🍸 Nice Night Out",treat:"✨ Treat Ourselves"};
- $("tags").innerHTML=`<span class="tag">${lastMission[0]}</span><span class="tag">${labels[lastMission[2]]}</span>${lastPoint[4]==="lake"?'<span class="tag">🌊 Waterfront</span>':''}`;
- $("result").classList.add("show");save();
-}
-function reroll(){lastMission=chooseMission();render()}
-function save(){
- let h=JSON.parse(localStorage.getItem("date-roulette-history")||"[]");
- h.unshift({point:lastPoint[1],area:lastPoint[0],date:lastMission[1]});h=h.slice(0,8);
- localStorage.setItem("date-roulette-history",JSON.stringify(h));renderHistory();
-}
-function renderHistory(){
- let h=JSON.parse(localStorage.getItem("date-roulette-history")||"[]");if(!h.length)return;
- $("historyCard").style.display="block";$("history").innerHTML=h.map(x=>`<div><b>${x.point}</b> · ${x.area}<br>${x.date}</div>`).join("");
-}
+
 $("spin").addEventListener("click",spin);
-$("reroll").addEventListener("click",reroll);
-$("radius").addEventListener("input",updateRadiusDisplay);
-updateRadiusDisplay();
-$("map").addEventListener("click",()=>{
- if(lastPoint) location.href=`https://www.google.com/maps/search/?api=1&query=${lastPoint.lat},${lastPoint.lon}`;
+$("newDate").addEventListener("click",spin);
+$("surprise").addEventListener("click",function(){
+ $("vibe").value="any";$("budget").value="any";$("time").value="any";$("radius").value="7";$("weird").checked=false;
+ $("radiusValue").textContent="7 min";spin();
 });
-renderHistory();
-if("serviceWorker"in navigator)navigator.serviceWorker.register("sw.js");
-</script></body></html>
+$("radius").addEventListener("input",function(){
+ $("radiusValue").textContent=getRadius()+" min";
+ if(currentPoint)$("radiusText").textContent=getRadius()+"-minute";
+});
+$("map").addEventListener("click",function(){
+ if(currentPoint)location.href="https://www.google.com/maps/search/?api=1&query="+currentPoint.lat+","+currentPoint.lon;
+});
+</script>
+</body>
+</html>
