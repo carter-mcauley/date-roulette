@@ -1,0 +1,125 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#111"><title>Date Roulette Toronto</title>
+<link rel="manifest" href="manifest.json">
+<style>
+*{box-sizing:border-box}body{margin:0;background:#f3efe8;color:#151515;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+main{min-height:100svh;max-width:600px;margin:auto;padding:22px 18px 34px}
+h1{font-size:44px;line-height:.88;letter-spacing:-2.5px;margin:16px 0 8px}.sub{color:#666;margin:0 0 20px}
+.card{background:#fff;border-radius:24px;padding:20px;box-shadow:0 8px 28px #0001;margin:12px 0}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}.control{background:#f3f1ed;border-radius:15px;padding:11px}.label{text-transform:uppercase;letter-spacing:1.4px;font-size:10px;color:#777;font-weight:800}
+select{width:100%;border:0;background:transparent;font-size:15px;font-weight:700;padding-top:5px;outline:0}
+.roulette{display:none;text-align:center;padding:34px 18px}.roulette.show{display:block}
+.spinner{font-size:58px;display:inline-block;animation:spin .65s linear infinite}@keyframes spin{to{transform:rotate(360deg)}}
+.result{display:none}.result.show{display:block}.place{font-size:32px;font-weight:850;letter-spacing:-1.3px;margin:5px 0}.mission{font-size:18px;line-height:1.42;color:#444;margin-top:7px}
+.tags{display:flex;gap:7px;flex-wrap:wrap;margin-top:12px}.tag{background:#eee;border-radius:99px;padding:6px 9px;font-size:12px;font-weight:750}
+button{width:100%;border:0;border-radius:18px;padding:18px;font-size:18px;font-weight:850;background:#151515;color:#fff;box-shadow:0 5px #000;margin-top:8px}button:active{transform:translateY(3px);box-shadow:0 2px #000}.secondary{background:#ddd;color:#111;box-shadow:none}.map{background:#e9f0ea;color:#16451e;box-shadow:none}
+.small{font-size:13px;color:#666;line-height:1.4}.history{font-size:13px;color:#555;line-height:1.45}.history div{padding:9px 0;border-bottom:1px solid #eee}
+.check{display:flex;align-items:center;gap:10px;font-size:14px;margin-top:12px}.check input{width:18px;height:18px}
+</style></head>
+<body><main>
+<h1>Date<br>Roulette 🎲</h1>
+<p class="sub">A random Toronto neighbourhood + a mission. Stop planning. Just go.</p>
+
+<div class="card">
+<div class="grid">
+<div class="control"><div class="label">Area</div><select id="area"><option value="any">Anywhere downtown</option>
+<option>Harbourfront</option><option>Queen West</option><option>Kensington Market</option><option>Chinatown</option><option>Distillery District</option><option>Yorkville</option><option>The Annex</option><option>King West</option><option>Ossington</option><option>St. Lawrence</option><option>Riverside</option></select></div>
+<div class="control"><div class="label">Vibe</div><select id="vibe"><option value="any">Surprise me</option><option>Chill</option><option>Playful</option><option>Food</option><option>Drinks</option><option>Adventure</option></select></div>
+<div class="control"><div class="label">Budget</div><select id="budget"><option value="any">Any budget</option><option value="low">Cheap</option><option value="mid">Under ~$50 each</option><option value="free">Free / almost free</option></select></div>
+<div class="control"><div class="label">Chaos</div><select id="chaos"><option value="1">Normal</option><option value="2">A little chaotic</option><option value="3">Unhinged</option></select></div>
+</div>
+<label class="check"><input type="checkbox" id="lake"> 🌊 Include something by the lake</label>
+</div>
+
+<div id="roulette" class="card roulette"><div class="spinner">🎲</div><div id="rolling">Rolling...</div></div>
+
+<div id="result" class="card result">
+<div class="label">Your destination</div><div id="place" class="place"></div>
+<div class="label" style="margin-top:20px">Your mission</div><div id="mission" class="mission"></div>
+<div class="tags" id="tags"></div>
+<button class="map" id="map">Open area in Maps ↗</button>
+<button class="secondary" id="reroll">Reroll the mission</button>
+</div>
+
+<button id="spin">SPIN THE DATE 🎰</button>
+
+<div id="historyCard" class="card" style="display:none"><div class="label">Recent dates</div><div id="history" class="history"></div></div>
+<p class="small">Tip: if the result feels too planned, give yourselves 60 seconds to leave the house and figure out the rest on the way.</p>
+</main>
+
+<script>
+const places=[
+["Harbourfront",["Chill","Drinks","Adventure"],["mid","low"],true],
+["Queen West",["Food","Drinks","Playful"],["low","mid"],false],
+["Kensington Market",["Food","Adventure","Playful"],["low","free"],false],
+["Chinatown",["Food","Adventure"],["low"],false],
+["Distillery District",["Chill","Drinks","Food"],["mid","low"],false],
+["Yorkville",["Chill","Food","Drinks"],["mid"],false],
+["The Annex",["Food","Drinks","Playful"],["low","mid"],false],
+["King West",["Drinks","Food","Playful"],["mid","low"],false],
+["Ossington",["Drinks","Food","Playful"],["mid","low"],false],
+["St. Lawrence",["Food","Chill","Adventure"],["low","mid"],false],
+["Riverside",["Food","Drinks","Adventure"],["low","mid"],false]
+];
+
+const missions=[
+["Chill","Find a scenic spot, grab a drink or snack, and sit somewhere neither of you has been before.","low",1,false],
+["Chill","Take a 20-minute walk with your phones away. Each person picks the next turn.","free",1,false],
+["Chill","Get something warm or cold to drink and find the nicest bench, patio, or view within a 10-minute walk.","low",1,true],
+["Playful","Go into the first interesting shop you see. You each get $10 to find the weirdest thing.","low",1,false],
+["Playful","Do a photo scavenger hunt: something red, tiny, ridiculous, beautiful, and unexpectedly Canadian.","free",1,false],
+["Playful","Each person gets 5 minutes to choose a completely unexpected stop for the other.","free",2,false],
+["Playful","Pick a random street. Walk it until you find something that makes both of you say, “we should try that.”","free",2,false],
+["Food","Find a place you've never tried and order one thing to share that neither of you would normally choose.","low",1,false],
+["Food","Pick a food you both like and find the best-looking version of it within a 10-minute walk.","low",1,false],
+["Drinks","Find a bar, café, patio, or wine spot you haven't tried. Loser of rock-paper-scissors chooses the first drink.","mid",1,false],
+["Drinks","Get one drink somewhere, then walk until you find a second place that looks better.","mid",2,false],
+["Adventure","Flip a coin at every major intersection for 15 minutes, then find something fun to do wherever you end up.","free",2,false],
+["Adventure","Give yourselves 30 minutes to find a genuinely interesting activity without looking up reviews.","low",2,false],
+["Adventure","Pick a random street nearby and walk it end-to-end. Stop at the first place that makes you both curious.","free",2,false],
+["Adventure","Your only rule: you can't go somewhere either of you has been before. Find something to do in 20 minutes.","low",3,false],
+["Playful","Spend $5 each at a convenience store and create the best possible snack pairing. Then rate each other's creation.","low",3,false],
+["Chill","Walk toward the lake and stop at the first place that looks good for a drink, snack, or view.","low",1,true],
+["Adventure","Start at the water and walk inland for 25 minutes. Your final stop is wherever you happen to be.","free",2,true]
+];
+
+let lastPlace,lastMission;
+const $=x=>document.getElementById(x), pick=a=>a[Math.floor(Math.random()*a.length)];
+
+function filteredPlaces(){
+ let a=places, area=$("area").value,v=$("vibe").value,b=$("budget").value;
+ if(area!=="any")a=a.filter(x=>x[0]===area);
+ if(v!=="any")a=a.filter(x=>x[1].includes(v));
+ if(b!=="any")a=a.filter(x=>x[2].includes(b));
+ if($("lake").checked)a=a.filter(x=>x[3]);
+ return a.length?a:places.filter(x=>area==="any"||x[0]===area);
+}
+function filteredMissions(){
+ let v=$("vibe").value,b=$("budget").value,c=+$("chaos").value,l=$("lake").checked;
+ let a=missions.filter(x=>(v==="any"||x[0]===v)&&(b==="any"||x[2]===b||x[2]==="free"&&b==="low")&&x[3]<=c&&(l?x[4]:true));
+ return a.length?a:missions.filter(x=>x[3]<=c);
+}
+function spin(){
+ $("spin").disabled=true;$("roulette").classList.add("show");$("result").classList.remove("show");
+ setTimeout(()=>{
+  let ps=filteredPlaces(),p=pick(ps);if(ps.length>1)while(p===lastPlace)p=pick(ps);
+  let ms=filteredMissions(),m=pick(ms);if(ms.length>1)while(m===lastMission)m=pick(ms);
+  lastPlace=p;lastMission=m;show(p,m);$("roulette").classList.remove("show");$("spin").disabled=false;
+ },850);
+}
+function show(p,m){
+ $("place").textContent=p[0];$("mission").textContent=m[1];
+ $("tags").innerHTML=`<span class="tag">${m[0]}</span><span class="tag">${m[2]==="free"?"Free / cheap":m[2]==="low"?"Low cost":"Mid-range"}</span>${m[4]?"<span class='tag'>🌊 Lake</span>":""}`;
+ $("result").classList.add("show");save(p[0],m[1]);
+}
+function reroll(){let ms=filteredMissions(),m=pick(ms);if(ms.length>1)while(m===lastMission)m=pick(ms);lastMission=m;show(lastPlace,m)}
+function save(place,mission){let h=JSON.parse(localStorage.getItem("dr-history")||"[]");h.unshift({place,mission});h=h.slice(0,8);localStorage.setItem("dr-history",JSON.stringify(h));renderHistory()}
+function renderHistory(){let h=JSON.parse(localStorage.getItem("dr-history")||"[]");if(!h.length)return;$("historyCard").style.display="block";$("history").innerHTML=h.map(x=>`<div><b>${x.place}</b> — ${x.mission}</div>`).join("")}
+$("spin").onclick=spin;$("reroll").onclick=reroll;
+$("map").onclick=()=>{if(lastPlace)location.href="https://www.google.com/maps/search/"+encodeURIComponent(lastPlace[0]+" Toronto")};
+renderHistory();
+if("serviceWorker"in navigator)navigator.serviceWorker.register("sw.js");
+</script></body></html>
